@@ -1,0 +1,33 @@
+erDiagram
+    CUSTOMER ||--o{ CUSTOMER_ORDER : places
+    CUSTOMER_ORDER ||--o{ ORDER_LINE : contains
+    MENU_ITEM ||--o{ ORDER_LINE : appears_in
+
+    CUSTOMER {
+        int customer_id PK
+        string full_name
+        string email
+        string phone
+    }
+
+    CUSTOMER_ORDER {
+        int order_id PK
+        int customer_id FK
+        datetime order_time
+        string status
+        decimal total_amount
+    }
+
+    ORDER_LINE {
+        int order_id PK,FK
+        int line_no PK
+        int menu_item_id FK
+        int quantity
+        decimal unit_price
+    }
+
+    MENU_ITEM {
+        int menu_item_id PK
+        string item_name
+        decimal menu_price
+    }
