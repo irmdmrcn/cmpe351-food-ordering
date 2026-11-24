@@ -1,7 +1,14 @@
 erDiagram
+    CUSTOMER ||--o{ CUSTOMER_ADDRESS : saves
     CUSTOMER ||--o{ CUSTOMER_ORDER : places
+    CUSTOMER_ADDRESS ||--o{ CUSTOMER_ORDER : delivery_address_for
+    BRANCH ||--o{ CUSTOMER_ORDER : receives
     CUSTOMER_ORDER ||--o{ ORDER_LINE : contains
     MENU_ITEM ||--o{ ORDER_LINE : appears_in
+    MENU_ITEM ||--|{ RECIPE_LINE : requires
+    INGREDIENT ||--o{ RECIPE_LINE : used_in
+    BRANCH ||--o{ BRANCH_STOCK : maintains
+    INGREDIENT ||--o{ BRANCH_STOCK : stocked_as
 
     CUSTOMER {
         int customer_id PK
@@ -10,11 +17,29 @@ erDiagram
         string phone
     }
 
+    CUSTOMER_ADDRESS {
+        int address_id PK
+        int customer_id FK
+        string city
+        string district
+        string street_address
+    }
+
+    BRANCH {
+        int branch_id PK
+        string branch_name
+        string city
+        string district
+    }
+
     CUSTOMER_ORDER {
         int order_id PK
         int customer_id FK
+        int address_id FK
+        int branch_id FK
         datetime order_time
         string status
+        decimal delivery_fee
         decimal total_amount
     }
 
@@ -30,4 +55,24 @@ erDiagram
         int menu_item_id PK
         string item_name
         decimal menu_price
+    }
+
+    INGREDIENT {
+        int ingredient_id PK
+        string ingredient_name
+        string unit
+    }
+
+    RECIPE_LINE {
+        int menu_item_id PK,FK
+        int ingredient_id PK,FK
+        decimal quantity_per_portion
+    }
+
+    BRANCH_STOCK {
+        int branch_id PK,FK
+        int ingredient_id PK,FK
+        decimal on_hand
+        decimal reserved
+        decimal reorder_level
     }
